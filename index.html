@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MicroProyecto 1. Juego de Bingo</title>
+    <link rel="stylesheet" href="style_index.css" type="text/css" />
+  </head>
+  <body id="body">
+    <div class="container">
+      <h1>BINGO</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Encabezado 1</th>
+            <th>Encabezado 2</th>
+            <th>Encabezado 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dato 1</td>
+            <td>Dato 2</td>
+            <td>Dato 3</td>
+          </tr>
+          <tr>
+            <td>Dato 4</td>
+            <td>Dato 5</td>
+            <td>Dato 6</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button id="btnIniciar" onclick="mostrarFormulario()">Iniciar</button>
+
+      <div id="popup" class="popup">
+        <form class="formulario" id="formulario" action="page2.html">
+          <h2>Formulario</h2>
+          <div class="izquierda">
+            <label>Nombre del Jugador 1:</label>
+            <input type="text" id="jugador1" name="jugador1" required />
+
+            <label>Nombre del Jugador 3:</label>
+            <input type="text" id="jugador3" name="jugador3" required />
+          </div>
+          <div class="derecha">
+            <label>Nombre del jugador 2:</label>
+            <input type="text" id="jugador2" name="jugador2" required />
+
+            <label>Nombre del Jugador 4:</label>
+            <input type="text" id="jugador4" name="jugador4" required />
+          </div>
+          <br />
+          <label>Tamaño del carton (nxn):</label>
+          <input type="number" id="n" name="n" required />
+          <br />
+          <input type="submit" value="Enviar" />
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
