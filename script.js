@@ -13,6 +13,11 @@ function ocultarFondoOscuro() {
   fondoOscuro.style.display = "none";
 }
 
+// Llamar a la función cuando el documento esté listo
+document.addEventListener("DOMContentLoaded", function () {
+  llenarTablaDesdeLocalStorage();
+});
+
 // Cuando se envía el formulario
 document
   .getElementById("formulario")
@@ -86,4 +91,52 @@ function generarMatriz(n) {
   }
 
   return matriz;
+}
+
+function llenarTablaDesdeLocalStorage() {
+  // Obtener referencia a la tabla
+  var table = document.querySelector("table tbody");
+  // Paso 1: Obtener todas las claves del localStorage
+  var keys = Object.keys(localStorage);
+
+  // Paso 2: Iterar sobre las claves y obtener los valores correspondientes
+  var localStorageData = [];
+
+  keys.forEach(function (key) {
+    var value = localStorage.getItem(key);
+    // Paso 3: Almacenar la clave y el valor en un objeto
+    localStorageData.push({ key: key, value: value });
+  });
+  // Verificar si hay datos en el almacenamiento local
+  if (localStorageData.length > 0) {
+    // Limpiar el contenido existente de la tabla
+    table.innerHTML = "";
+
+    localStorageData.sort(function (a, b) {
+      var valueA = parseInt(a.value);
+      var valueB = parseInt(b.value);
+      return valueB - valueA;
+    });
+
+    localStorageData.forEach(function (item) {
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      cell1.textContent = item.key; // Clave
+      cell2.textContent = item.value;
+    });
+
+    // Iterar sobre los datos y agregar filas a la tabla
+    /*localStorageData.forEach(function (dato) {
+      for (var key in dato) {
+        if (dato.hasOwnProperty(key)) {
+          var row = table.insertRow();
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          cell1.textContent = key; // Clave
+          cell2.textContent = dato[key]; // Valor
+        }
+      }
+    });*/
+  }
 }

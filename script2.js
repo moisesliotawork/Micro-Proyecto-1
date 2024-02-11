@@ -6,27 +6,37 @@ var elementoTurno = document.getElementById("turno");
 elementoTurno.textContent = turno;
 
 function mostrarFormulario() {
-  if (turno < 25) {
-    AsignarPuntos();
-    let popup = document.getElementById("popup");
-    let number = document.getElementById("number");
-    var n = generarNumeroAleatorio();
-
-    var arregloGuardado = JSON.parse(sessionStorage.getItem("arreglo"));
-
-    while (arregloGuardado.indexOf(n) !== -1) {
-      n = generarNumeroAleatorio();
-    }
-
-    arregloGuardado.push(n);
-    sessionStorage.setItem("arreglo", JSON.stringify(arregloGuardado));
-    AsignarPuntos();
-    number.textContent = n;
-    popup.style.display = "block";
-  } else {
+  if (VerificarCartonLleno()) {
+    verificarYAgregarAlLocalStorage();
+    vitoria();
     crearTabla();
     let popup2 = document.getElementById("popup2");
     popup2.style.display = "block";
+  } else {
+    if (turno < 25) {
+      AsignarPuntos();
+      let popup = document.getElementById("popup");
+      let number = document.getElementById("number");
+      var n = generarNumeroAleatorio();
+
+      var arregloGuardado = JSON.parse(sessionStorage.getItem("arreglo"));
+
+      while (arregloGuardado.indexOf(n) !== -1) {
+        n = generarNumeroAleatorio();
+      }
+
+      arregloGuardado.push(n);
+      sessionStorage.setItem("arreglo", JSON.stringify(arregloGuardado));
+      AsignarPuntos();
+      number.textContent = n;
+      popup.style.display = "block";
+    } else {
+      verificarYAgregarAlLocalStorage();
+      vitoria();
+      crearTabla();
+      let popup2 = document.getElementById("popup2");
+      popup2.style.display = "block";
+    }
   }
 }
 
@@ -374,7 +384,7 @@ function crearTabla() {
   jugadores.sort((a, b) => b.puntos - a.puntos);
 
   // Crear la tabla HTML
-  let tabla = '<table border="1">';
+  let tabla = '<table border="1" class="tabla-resultados">';
   tabla += "<tr><th>Nombre</th><th>Puntos</th><th>Lugar</th></tr>";
 
   // Iterar sobre los jugadores para agregar filas a la tabla
@@ -393,11 +403,97 @@ function crearTabla() {
 
   // Crear un botón "Terminar partida"
   let botonTerminar = document.createElement("button");
+  botonTerminar.id = "terminarPartidaBtn";
+
   botonTerminar.textContent = "Terminar partida";
   botonTerminar.addEventListener("click", function () {
-    window.location.href = "index.html";
+    vaciarSessionStorageYRedirigir();
   });
 
   // Insertar el botón debajo de la tabla
   document.getElementById("popup2").appendChild(botonTerminar);
+}
+
+function CartonLleno(matriz, arreglo) {
+  // Crear un arreglo plano a partir de la matriz
+  const numerosMatriz = matriz.flat();
+
+  // Verificar si todos los números de la matriz están en el arreglo
+  for (let i = 0; i < numerosMatriz.length; i++) {
+    if (!arreglo.includes(numerosMatriz[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function VerificarCartonLleno() {
+  let j1 = JSON.parse(sessionStorage.getItem("j1"));
+  let j2 = JSON.parse(sessionStorage.getItem("j2"));
+  let j3 = JSON.parse(sessionStorage.getItem("j3"));
+  let j4 = JSON.parse(sessionStorage.getItem("j4"));
+
+  let arreglo = JSON.parse(sessionStorage.getItem("arreglo"));
+
+  if (
+    CartonLleno(j1.matriz, arreglo) ||
+    CartonLleno(j2.matriz, arreglo) ||
+    CartonLleno(j3.matriz, arreglo) ||
+    CartonLleno(j4.matriz, arreglo)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function verificarYAgregarAlLocalStorage() {
+  // Obtener los elementos del sessionStorage
+  let j1 = JSON.parse(sessionStorage.getItem("j1"));
+  let j2 = JSON.parse(sessionStorage.getItem("j2"));
+  let j3 = JSON.parse(sessionStorage.getItem("j3"));
+  let j4 = JSON.parse(sessionStorage.getItem("j4"));
+
+  // Verificar si los elementos existen en el localStorage y agregarlos si no existen
+  agregarAlLocalStorageSiNoExiste(j1.nombre);
+  agregarAlLocalStorageSiNoExiste(j2.nombre);
+  agregarAlLocalStorageSiNoExiste(j3.nombre);
+  agregarAlLocalStorageSiNoExiste(j4.nombre);
+}
+
+function agregarAlLocalStorageSiNoExiste(key) {
+  // Obtener el valor del localStorage
+  let valorLocalStorage = JSON.parse(localStorage.getItem(key));
+  // Verificar si el valor no existe en el localStorage
+  if (!valorLocalStorage) {
+    // Agregar el valor al localStorage
+    localStorage.setItem(key, 0);
+  }
+}
+
+function vitoria() {
+  // Obtener los objetos del sessionStorage
+  let j1 = JSON.parse(sessionStorage.getItem("j1"));
+  let j2 = JSON.parse(sessionStorage.getItem("j2"));
+  let j3 = JSON.parse(sessionStorage.getItem("j3"));
+  let j4 = JSON.parse(sessionStorage.getItem("j4"));
+
+  // Array de jugadores
+  let jugadores = [j1, j2, j3, j4];
+
+  // Inicializar variables para el jugador con más puntos
+  let jugadorConMasPuntos = jugadores[0].nombre;
+  let maxPuntos = jugadores[0].puntos; // Inicializamos con los puntos del primer jugador
+
+  // Iterar sobre los jugadores para encontrar el que tiene más puntos
+  jugadores.forEach((jugador) => {
+    if (jugador.puntos > maxPuntos) {
+      maxPuntos = jugador.puntos;
+      jugadorConMasPuntos = jugador.nombre;
+    }
+  });
+
+  var pto = localStorage.getItem(jugadorConMasPuntos);
+  pto = parseInt(pto) + 1;
+  localStorage.setItem(jugadorConMasPuntos, pto);
 }
