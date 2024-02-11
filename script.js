@@ -3,6 +3,16 @@ function mostrarFormulario() {
   popup.style.display = "block";
 }
 
+function mostrarFondoOscuro() {
+  var fondoOscuro = document.getElementById("fondoOscuro");
+  fondoOscuro.style.display = "block";
+}
+
+function ocultarFondoOscuro() {
+  var fondoOscuro = document.getElementById("fondoOscuro");
+  fondoOscuro.style.display = "none";
+}
+
 // Cuando se envía el formulario
 document
   .getElementById("formulario")
@@ -23,19 +33,19 @@ document
       let matriz3 = generarMatriz(parseInt(n));
       let matriz4 = generarMatriz(parseInt(n));
       // Generar las matrices y crear los objetos de jugador
-      let j1 = { nombre: jugador1, matriz: matriz1 };
-      let j2 = { nombre: jugador2, matriz: matriz2 };
-      let j3 = { nombre: jugador3, matriz: matriz3 };
-      let j4 = { nombre: jugador4, matriz: matriz4 };
+      let j1 = { nombre: jugador1, matriz: matriz1, puntos: 0 };
+      let j2 = { nombre: jugador2, matriz: matriz2, puntos: 0 };
+      let j3 = { nombre: jugador3, matriz: matriz3, puntos: 0 };
+      let j4 = { nombre: jugador4, matriz: matriz4, puntos: 0 };
 
       // Almacenar los valores en sessionStorage
       sessionStorage.setItem("j1", JSON.stringify(j1));
       sessionStorage.setItem("j2", JSON.stringify(j2));
       sessionStorage.setItem("j3", JSON.stringify(j3));
       sessionStorage.setItem("j4", JSON.stringify(j4));
+      sessionStorage.setItem("maxMatriz", JSON.stringify(n));
 
       document.getElementById("popup").style.display = "none";
-
       // Redireccionar a la nueva página
       window.location.href = "page2.html";
     }
