@@ -493,7 +493,9 @@ function vitoria() {
     }
   });
 
-  var pto = localStorage.getItem(jugadorConMasPuntos);
-  pto = parseInt(pto) + 1;
-  localStorage.setItem(jugadorConMasPuntos, pto);
+  if (maxPuntos !== 0) {
+    var pto = localStorage.getItem(jugadorConMasPuntos);
+    pto = parseInt(pto) + 1;
+    localStorage.setItem(jugadorConMasPuntos, pto);
+  }
 }
