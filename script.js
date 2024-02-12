@@ -23,7 +23,6 @@ document
   .getElementById("formulario")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-    // Evitar que se envíe el formulario por defecto
 
     if (validarNumero()) {
       // Obtener los valores del formulario
@@ -125,18 +124,5 @@ function llenarTablaDesdeLocalStorage() {
       cell1.textContent = item.key; // Clave
       cell2.textContent = item.value;
     });
-
-    // Iterar sobre los datos y agregar filas a la tabla
-    /*localStorageData.forEach(function (dato) {
-      for (var key in dato) {
-        if (dato.hasOwnProperty(key)) {
-          var row = table.insertRow();
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          cell1.textContent = key; // Clave
-          cell2.textContent = dato[key]; // Valor
-        }
-      }
-    });*/
   }
 }
